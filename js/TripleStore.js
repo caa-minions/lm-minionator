@@ -62,21 +62,18 @@ TS.query = (sparql, callback) => {
                     let arrLinks = [];
                     for (var item in bindings) {
                         if (bindings[item]['date'].value.includes(arrItems[d])) {
-                            obj.level = bindings[item]['level'].value;
+                            obj.status = bindings[item]['state'].value;
                             obj.name = bindings[item]['name'].value;
                             obj.description = bindings[item]['description'].value;
                             obj.date = bindings[item]['date'].value;
-                            obj.consumes = bindings[item]['consumes'].value;
-                            obj.produces = bindings[item]['produces'].value;
+                            obj.active = bindings[item]['active'].value;
+                            obj.author = bindings[item]['author'].value;
+                            obj.git = bindings[item]['gitrepository'].value;
                             obj.id = bindings[item]['id'].value;
                             obj.url = "http://www.wikidata.org/entity/" + bindings[item]['id'].value;
-                            arrIn.push(bindings[item]['input'].value);
-                            arrOut.push(bindings[item]['output'].value);
                             arrLinks.push("<br>" + bindings[item]['link'].value);
                         }
                     }
-                    arrIn = remDoub(arrIn);
-                    arrOut = remDoub(arrOut);
                     arrLinks = remDoub(arrLinks);
                     obj.input = arrIn;
                     obj.output = arrOut;

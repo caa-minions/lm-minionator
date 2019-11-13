@@ -1,13 +1,8 @@
 var obj;
 var split;
 var FJS;
-var map;
-var markers;
-var levelListGUI = [];
-var consumesListGUI = [];
-var producesListGUI = [];
-var inListGUI = [];
-var outListGUI = [];
+var statusListGUI = [];
+var activeListGUI = [];
 
 // get single elements in array
 let remDoub = (arr) => {
@@ -31,47 +26,19 @@ let setData = (response) => {
     obj = response;
     console.log(obj);
     for (var i = 0; i < obj.length; i++) {
-        split = obj[i].input;
-        for (var j = 0; j < split.length; j++) {
-            if (split[j] != "") {
-                inListGUI.push(split[j]);
-            }
-        }
-        split = obj[i].output;
-        for (var j = 0; j < split.length; j++) {
-            if (split[j] != "") {
-                outListGUI.push(split[j]);
-            }
-        }
-        levelListGUI.push(obj[i].level);
-        consumesListGUI.push(obj[i].consumes);
-        producesListGUI.push(obj[i].produces);
+        statusListGUI.push(obj[i].status);
+        activeListGUI.push(obj[i].active);
     }
     // fill Filter GUI values
-    levelListGUI = remDoub(levelListGUI);
-    for (var i = 0; i < levelListGUI.length; i++) {
-        var string = "<div class='checkbox'><label><input type='checkbox' value='" + levelListGUI[i] + "' id='level_criteria-" + i + "'><span>" + levelListGUI[i] + "</span></label></div>";
-        $(string).appendTo("#level_criteria");
+    statusListGUI = remDoub(statusListGUI);
+    for (var i = 0; i < statusListGUI.length; i++) {
+        var string = "<div class='checkbox'><label><input type='checkbox' value='" + statusListGUI[i] + "' id='status_criteria-" + i + "'><span>" + statusListGUI[i] + "</span></label></div>";
+        $(string).appendTo("#status_criteria");
     }
-    consumesListGUI = remDoub(consumesListGUI);
-    for (var i = 0; i < consumesListGUI.length; i++) {
-        var string = "<div class='checkbox'><label><input type='checkbox' value='" + consumesListGUI[i] + "' id='consumes_criteria-" + i + "'><span>" + consumesListGUI[i] + "</span></label></div>";
-        $(string).appendTo("#consumes_criteria");
-    }
-    producesListGUI = remDoub(producesListGUI);
-    for (var i = 0; i < producesListGUI.length; i++) {
-        var string = "<div class='checkbox'><label><input type='checkbox' value='" + producesListGUI[i] + "' id='produces_criteria-" + i + "'><span>" + producesListGUI[i] + "</span></label></div>";
-        $(string).appendTo("#produces_criteria");
-    }
-    inListGUI = remDoub(inListGUI);
-    for (var i = 0; i < inListGUI.length; i++) {
-        var string = "<div class='checkbox'><label><input type='checkbox' value='" + inListGUI[i] + "' id='input_criteria-" + i + "'><span>" + inListGUI[i] + "</span></label></div>";
-        $(string).appendTo("#input_criteria");
-    }
-    outListGUI = remDoub(outListGUI);
-    for (var i = 0; i < outListGUI.length; i++) {
-        var string = "<div class='checkbox'><label><input type='checkbox' value='" + outListGUI[i] + "' id='output_criteria-" + i + "'><span>" + outListGUI[i] + "</span></label></div>";
-        $(string).appendTo("#output_criteria");
+    activeListGUI = remDoub(activeListGUI);
+    for (var i = 0; i < activeListGUI.length; i++) {
+        var string = "<div class='checkbox'><label><input type='checkbox' value='" + activeListGUI[i] + "' id='active_criteria-" + i + "'><span>" + activeListGUI[i] + "</span></label></div>";
+        $(string).appendTo("#active_criteria");
     }
     // show number of elements
     $('#total_data').text(obj.length);
@@ -81,11 +48,8 @@ let setData = (response) => {
 };
 
 function initFiltersHTML() {
-    $('#level_criteria :checkbox').prop('checked', false);
-    $('#consumes_criteria :checkbox').prop('checked', false);
-    $('#produces_criteria :checkbox').prop('checked', false);
-    $('#input_criteria :checkbox').prop('checked', false);
-    $('#output_criteria :checkbox').prop('checked', false);
+    $('#status_criteria :checkbox').prop('checked', false);
+    $('#active_criteria :checkbox').prop('checked', false);
     initFilters();
 }
 
@@ -94,19 +58,10 @@ function initFilters() {
         template: '#main_template',
         criterias: [{
             field: 'level',
-            ele: '#level_criteria input:checkbox'
+            ele: '#status_criteria input:checkbox'
         }, {
             field: 'consumes',
-            ele: '#consumes_criteria input:checkbox'
-        }, {
-            field: 'produces',
-            ele: '#produces_criteria input:checkbox'
-        }, {
-            field: 'input',
-            ele: '#input_criteria input:checkbox'
-        }, {
-            field: 'output',
-            ele: '#output_criteria input:checkbox'
+            ele: '#active_criteria input:checkbox'
         }],
         search: {
             ele: '#searchbox'
@@ -141,6 +96,6 @@ var resethighlight = function() {
 }
 
 $(document).ready(function() {
-    let q = "SELECT DISTINCT * WHERE { ?s a rset:LinkedTool. ?s rset:name ?name. ?s rset:description ?description. ?s rset:dateOfEntry ?date. ?s rset:entryLevel ?level. ?s rset:consumesLOD ?consumes. ?s rset:producesLOD ?produces. ?s rset:inputFormat ?input. ?s rset:outputFormat ?output. ?s rset:wikidataid ?id. ?s rset:link ?link. } ORDER BY ASC(?name)";
+    let q = "SELECT DISTINCT * WHERE { ?s a rset:LittleMinion. ?s rset:name ?name. ?s rset:description ?description. ?s rset:dateOfEntry ?date. ?s rset:toolState ?state. ?s rset:active ?active. ?s rset:gitrepository ?gitrepository. ?s rset:author ?author. ?s rset:wikidataid ?id. ?s rset:link ?link. } ORDER BY ASC(?name)";
     TS.query(q, setData);
 });
