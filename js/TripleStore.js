@@ -54,11 +54,6 @@ TS.query = (sparql, callback) => {
                 console.log(bindings);
                 for (var d in arrItems) {
                     let obj = [];
-                    let arrLevel = [];
-                    let arrCons = [];
-                    let arrProd = [];
-                    let arrIn = [];
-                    let arrOut = [];
                     let arrLinks = [];
                     for (var item in bindings) {
                         if (bindings[item]['date'].value.includes(arrItems[d])) {

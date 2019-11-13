@@ -57,10 +57,10 @@ function initFilters() {
     FJS = FilterJS(obj, '#data', {
         template: '#main_template',
         criterias: [{
-            field: 'level',
+            field: 'status',
             ele: '#status_criteria input:checkbox'
         }, {
-            field: 'consumes',
+            field: 'active',
             ele: '#active_criteria input:checkbox'
         }],
         search: {
