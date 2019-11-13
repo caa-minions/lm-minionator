@@ -70,8 +70,6 @@ TS.query = (sparql, callback) => {
                         }
                     }
                     arrLinks = remDoub(arrLinks);
-                    obj.input = arrIn;
-                    obj.output = arrOut;
                     let links = arrLinks.toString();
                     obj.link = links.replace(",", "");
                     arr.push(obj);
